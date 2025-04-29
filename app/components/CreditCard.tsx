@@ -47,19 +47,23 @@ const CreditCard2 = () => {
 
 	const validation = (formData: FormData) => {
 		const errors: Errors = {};
+		console.log(formData);
 		if (
-			!formData.hasOwnProperty("number") ||
+			formData.number!.trim().length === 0 ||
 			formData.number!.length < 12 ||
 			formData.number!.length > 12 ||
-			typeof parseInt(formData.number!) === "number"
+			typeof parseInt(formData.number!) !== "number"
 		) {
 			errors.number = "Invalid number";
 		}
-		if (formData.hasOwnProperty("name") || /[A-Z][a-z]/.test(formData.name!)) {
+		if (
+			formData.name!.trim().length === 0 ||
+			!/^[A-Za-z]+$/.test(formData.name!)
+		) {
 			errors.name = "Invalid name";
 		}
 		if (
-			formData.hasOwnProperty("month") ||
+			formData.month === undefined ||
 			formData.month!.toString().length !== 2 ||
 			formData.month! < 1 ||
 			formData.month! > 12
@@ -69,17 +73,14 @@ const CreditCard2 = () => {
 
 		const currentYear = new Date().getFullYear();
 		if (
-			formData.hasOwnProperty("year") ||
+			formData.year === undefined ||
 			formData.year! < currentYear ||
 			formData.year! >= currentYear + 4
 		) {
 			errors.year = "Invalid year";
 		}
 
-		if (
-			formData.hasOwnProperty("cvv") ||
-			formData.cvv!.toString().length !== 3
-		) {
+		if (formData.cvv === undefined || formData.cvv!.toString().length !== 3) {
 			errors.cvv = "Invalid cvv";
 		}
 		return errors;
