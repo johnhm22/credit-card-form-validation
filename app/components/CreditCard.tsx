@@ -53,6 +53,7 @@ const CreditCard = () => {
 
 	const validation = (formData: FormData) => {
 		const errors: Errors = {};
+
 		if (
 			formData.number!.trim().length === 0 ||
 			formData.number!.length < 12 ||
@@ -63,12 +64,12 @@ const CreditCard = () => {
 		}
 		if (
 			formData.name!.trim().length === 0 ||
-			!/^[A-Za-z]+$/.test(formData.name!)
+			!/[A-Za-z]+$/.test(formData.name!)
 		) {
 			errors.name = "Invalid name";
 		}
 		if (
-			formData.month === undefined ||
+			formData.month!.trim().length === 0 ||
 			+formData.month! < 1 ||
 			+formData.month! > 12 ||
 			parseInt(formData.month!) < 1 ||
@@ -79,14 +80,17 @@ const CreditCard = () => {
 
 		const currentYear = new Date().getFullYear();
 		if (
-			formData.year === undefined ||
+			formData.year!.trim().length === 0 ||
 			+formData.year! < currentYear ||
 			+formData.year! >= currentYear + 4
 		) {
 			errors.year = "Invalid year";
 		}
 
-		if (formData.cvv === undefined || formData.cvv!.toString().length !== 3) {
+		if (
+			formData.cvv!.trim().length === 0 ||
+			formData.cvv!.toString().length !== 3
+		) {
 			errors.cvv = "Invalid cvv";
 		}
 		return errors;
