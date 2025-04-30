@@ -55,21 +55,18 @@ const CreditCard = () => {
 		const errors: Errors = {};
 
 		if (
-			formData.number!.trim().length === 0 ||
+			!formData.number!.trim() ||
 			formData.number!.length < 12 ||
 			formData.number!.length > 12 ||
 			typeof parseInt(formData.number!) !== "number"
 		) {
 			errors.number = "Invalid number";
 		}
-		if (
-			formData.name!.trim().length === 0 ||
-			!/[A-Za-z]+$/.test(formData.name!.trim())
-		) {
+		if (!formData.name!.trim() || !/[A-Za-z]+$/.test(formData.name!.trim())) {
 			errors.name = "Invalid name";
 		}
 		if (
-			formData.month!.trim().length === 0 ||
+			!formData.month!.trim() ||
 			+formData.month! < 1 ||
 			+formData.month! > 12 ||
 			parseInt(formData.month!) < 1 ||
@@ -80,7 +77,7 @@ const CreditCard = () => {
 
 		const currentYear = new Date().getFullYear();
 		if (
-			formData.year!.trim().length === 0 ||
+			!formData.year!.trim() ||
 			+formData.year! < currentYear ||
 			+formData.year! >= currentYear + 4
 		) {
