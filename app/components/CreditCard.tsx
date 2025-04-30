@@ -64,7 +64,7 @@ const CreditCard = () => {
 		}
 		if (
 			formData.name!.trim().length === 0 ||
-			!/[A-Za-z]+$/.test(formData.name!)
+			!/[A-Za-z]+$/.test(formData.name!.trim())
 		) {
 			errors.name = "Invalid name";
 		}
@@ -87,10 +87,7 @@ const CreditCard = () => {
 			errors.year = "Invalid year";
 		}
 
-		if (
-			formData.cvv!.trim().length === 0 ||
-			formData.cvv!.toString().length !== 3
-		) {
+		if (formData.cvv!.trim().length !== 3) {
 			errors.cvv = "Invalid cvv";
 		}
 		return errors;
