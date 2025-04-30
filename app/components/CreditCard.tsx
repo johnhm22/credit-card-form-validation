@@ -13,20 +13,22 @@ type Errors = {
 type FormData = {
 	number?: string;
 	name?: string;
-	month?: number;
-	year?: number;
-	cvv?: number;
+	month?: string;
+	year?: string;
+	cvv?: string;
 };
 
-const CreditCard2 = () => {
+const InitialState = {
+	number: "",
+	name: "",
+	month: "",
+	year: "",
+	cvv: "",
+};
+
+const CreditCard = () => {
 	const dialogRef = useRef<HTMLDialogElement | null>(null);
-	const [formData, setFormData] = useState({
-		number: "",
-		name: "",
-		month: undefined,
-		year: undefined,
-		cvv: undefined,
-	});
+	const [formData, setFormData] = useState(InitialState);
 
 	const [errors, setErrors] = useState<Errors>({});
 
@@ -39,15 +41,18 @@ const CreditCard2 = () => {
 		e.preventDefault();
 		const errorsResult = validation(formData);
 		setErrors(errorsResult);
+		if (Object.keys(errorsResult).length === 0) {
+			window.alert("Well done! There are no errors");
+		}
 
 		setTimeout(() => {
 			setErrors({});
+			setFormData(InitialState);
 		}, 3000);
 	};
 
 	const validation = (formData: FormData) => {
 		const errors: Errors = {};
-		console.log(formData);
 		if (
 			formData.number!.trim().length === 0 ||
 			formData.number!.length < 12 ||
@@ -64,9 +69,10 @@ const CreditCard2 = () => {
 		}
 		if (
 			formData.month === undefined ||
-			formData.month!.toString().length !== 2 ||
-			formData.month! < 1 ||
-			formData.month! > 12
+			+formData.month! < 1 ||
+			+formData.month! > 12 ||
+			parseInt(formData.month!) < 1 ||
+			parseInt(formData.month!) > 12
 		) {
 			errors.month = "Invalid month";
 		}
@@ -74,8 +80,8 @@ const CreditCard2 = () => {
 		const currentYear = new Date().getFullYear();
 		if (
 			formData.year === undefined ||
-			formData.year! < currentYear ||
-			formData.year! >= currentYear + 4
+			+formData.year! < currentYear ||
+			+formData.year! >= currentYear + 4
 		) {
 			errors.year = "Invalid year";
 		}
@@ -137,6 +143,7 @@ const CreditCard2 = () => {
 						name="number"
 						onChange={handleOnChange}
 						suppressHydrationWarning
+						value={formData.number}
 					/>
 				</div>
 				{errors?.number && (
@@ -154,6 +161,7 @@ const CreditCard2 = () => {
 						name="name"
 						onChange={handleOnChange}
 						suppressHydrationWarning
+						value={formData.name}
 					/>
 				</div>
 				{errors?.name && (
@@ -169,6 +177,7 @@ const CreditCard2 = () => {
 						name="month"
 						onChange={handleOnChange}
 						suppressHydrationWarning
+						value={formData.month}
 					/>
 				</div>
 				{errors?.month && (
@@ -186,6 +195,7 @@ const CreditCard2 = () => {
 						name="year"
 						onChange={handleOnChange}
 						suppressHydrationWarning
+						value={formData.year}
 					/>
 				</div>
 				{errors?.year && (
@@ -201,6 +211,7 @@ const CreditCard2 = () => {
 						name="cvv"
 						onChange={handleOnChange}
 						suppressHydrationWarning
+						value={formData.cvv}
 					/>
 				</div>
 				{errors?.cvv && (
@@ -229,4 +240,4 @@ const CreditCard2 = () => {
 	);
 };
 
-export default CreditCard2;
+export default CreditCard;
